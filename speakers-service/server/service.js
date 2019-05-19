@@ -33,7 +33,7 @@ module.exports = (config) => {
     service.get('/names', async (req, res, next) => {
         try {
             return res.status(200).json(await speakers.getNames());
-        } catch(err) {
+        } catch (err) {
             return next(err);
         }
     });
@@ -41,7 +41,7 @@ module.exports = (config) => {
     service.get('/speaker/:shortname', async (req, res, next) => {
         try {
             return res.status(200).json(await speakers.getSpeaker(req.params.shortname));
-        } catch(err) {
+        } catch (err) {
             return next(err);
         }
     });
@@ -49,7 +49,7 @@ module.exports = (config) => {
     service.get('/artwork/:shortname', async (req, res, next) => {
         try {
             return res.status(200).json(await speakers.getArtworkForSpeaker(req.params.shortname));
-        } catch(err) {
+        } catch (err) {
             return next(err);
         }
     });
@@ -57,7 +57,7 @@ module.exports = (config) => {
     service.get('/artwork', async (req, res, next) => {
         try {
             return res.status(200).json(await speakers.getAllArtwork());
-        } catch(err) {
+        } catch (err) {
             return next(err);
         }
     });

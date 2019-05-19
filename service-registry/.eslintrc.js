@@ -17,5 +17,6 @@ module.exports = {
         "indent": "off",
         "eol-last": "off",
         "no-unused-vars": "off",
+        "operator-linebreak": "off",
     },
 };
