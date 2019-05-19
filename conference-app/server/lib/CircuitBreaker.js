@@ -6,7 +6,7 @@ class CircuitBreaker {
         this.states = {};
         this.failThresh = 5;
         this.cooldown = 10;
-        this.reqTimeout = 1;
+        this.reqTimeout = 2;
     }
 
     async callService(reqOptions) {
@@ -33,6 +33,7 @@ class CircuitBreaker {
 
     onFailure(endpoint) {
         const state = this.states[endpoint];
+        // console.log(state);
         state.failures += 1;
         if (state.failures > this.failThresh) {
             state.circuit = 'OPEN';
