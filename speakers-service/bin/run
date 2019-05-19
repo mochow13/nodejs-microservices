@@ -21,22 +21,22 @@ server.on('listening', () => {
     const interval = setInterval(registerService, config.heartbeat * 1000);
 
     // cleanup handles error situations to unregister the service from the service registry
-    const cleanup = async() => {
+    const cleanup = async () => {
         clearInterval(interval);
         await unregisterService();
     };
 
-    process.on('uncaughtException', async() => {
+    process.on('uncaughtException', async () => {
         await cleanup();
         process.exit(0);
     });
 
-    process.on('SIGTERM', async() => {
+    process.on('SIGTERM', async () => {
         await cleanup();
         process.exit(0);
     });
 
-    process.on('SIGINT', async() => {
+    process.on('SIGINT', async () => {
         await cleanup();
         process.exit(0);
     });

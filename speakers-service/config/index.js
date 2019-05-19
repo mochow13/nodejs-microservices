@@ -6,13 +6,13 @@ const pjs = require('../package.json');
 // Get some meta info from the package.json
 const {
     name,
-    version
+    version,
 } = pjs;
 
 // Set up a logger
 const getLogger = (serviceName, serviceVersion, level) => bunyan.createLogger({
     name: `${serviceName}:${serviceVersion}`,
-    level
+    level,
 });
 
 // Configuration options for different environments
@@ -23,6 +23,7 @@ module.exports = {
         serviceTimeout: 30,
         heartbeat: 20,
         data: {
+            images: path.join(__dirname, '../data/images'),
             speakers: path.join(__dirname, '../data/speakers.json'),
         },
         log: () => getLogger(name, version, 'debug'),
@@ -33,6 +34,7 @@ module.exports = {
         serviceTimeout: 30,
         heartbeat: 20,
         data: {
+            images: path.join(__dirname, '../data/images'),
             speakers: path.join(__dirname, '../data/speakers.json'),
         },
         log: () => getLogger(name, version, 'info'),

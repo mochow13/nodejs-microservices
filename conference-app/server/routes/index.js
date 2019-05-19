@@ -6,28 +6,39 @@ const speakersRoute = require('./speakers');
 const feedbackRoute = require('./feedback');
 
 module.exports = (param) => {
-  const { speakers } = param;
+    const {
+        speakers,
+    } = param;
 
-  router.get('/', async (req, res, next) => {
-    try {
-      const promises = [];
-      promises.push(speakers.getListShort());
-      promises.push(speakers.getAllArtwork());
+    router.get('/images/:type/:file', async (req, res, next) => {
+        try {
+            const image = await speakers.getImage(`${req.params.type}/${req.params.file}`);
+            return image.pipe(res);
+        } catch (err) {
+            return next(err);
+        }
+    });
 
-      const results = await Promise.all(promises);
+    router.get('/', async (req, res, next) => {
+        try {
+            const promises = [];
+            promises.push(speakers.getListShort());
+            promises.push(speakers.getAllArtwork());
 
-      return res.render('index', {
-        page: 'Home',
-        speakerslist: results[0],
-        artwork: results[1],
-      });
-    } catch (err) {
-      return next(err);
-    }
-  });
+            const results = await Promise.all(promises);
 
-  router.use('/speakers', speakersRoute(param));
-  router.use('/feedback', feedbackRoute(param));
+            return res.render('index', {
+                page: 'Home',
+                speakerslist: results[0],
+                artwork: results[1],
+            });
+        } catch (err) {
+            return next(err);
+        }
+    });
 
-  return router;
+    router.use('/speakers', speakersRoute(param));
+    router.use('/feedback', feedbackRoute(param));
+
+    return router;
 };
