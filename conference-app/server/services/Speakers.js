@@ -73,13 +73,13 @@ class SpeakersService {
     async callService(reqOptions) {
         const servicePath = url.parse(reqOptions.url).path;
         const cacheKey = crypto.createHash('md5').update(reqOptions.method + servicePath).digest('hex');
-        
+
         let cacheFile = null;
 
         if (reqOptions.responseType && reqOptions.responseType === 'stream') {
             cacheFile = `${__dirname}/../../_imagecache/${cacheKey}`;
         }
-        
+
         const result = await circuitBreaker.callService(reqOptions);
 
         if (!result) {

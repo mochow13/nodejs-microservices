@@ -1,30 +1,56 @@
-const fs = require('fs');
-const util = require('util');
+/* eslint-disable class-methods-use-this */
+const url = require('url');
+const axios = require('axios');
+const crypto = require('crypto');
 
-const readFile = util.promisify(fs.readFile);
-const writeFile = util.promisify(fs.writeFile);
+const CircuitBreaker = require('../lib/CircuitBreaker');
+
+const circuitBreaker = new CircuitBreaker();
 
 class FeedbackService {
-  constructor(datafile) {
-    this.datafile = datafile;
-  }
+    constructor({
+        serviceRegURL,
+        serviceVersionId,
+    }) {
+        this.serviceRegURL = serviceRegURL;
+        this.serviceVersionId = serviceVersionId;
+        this.cache = {};
+    }
 
-  async addEntry(name, title, message) {
-    const data = await this.getData();
-    data.unshift({ name, title, message });
-    return writeFile(this.datafile, JSON.stringify(data));
-  }
+    async getList() {
+        // console.log('Here');
+        const {
+            ip,
+            port,
+        } = await this.getService('feedback-service');
+        console.log(ip, port);
+        return this.callService({
+            method: 'get',
+            url: `http://${ip}:${port}/list`,
+        });
+    }
 
-  async getList() {
-    const data = await this.getData();
-    return data;
-  }
+    async callService(requestOptions) {
+        const parsedUrl = url.parse(requestOptions.url);
+        const cacheKey = crypto.createHash('md5').update(requestOptions.method + parsedUrl.path).digest('hex');
 
-  async getData() {
-    const data = await readFile(this.datafile, 'utf8');
-    if (!data) return [];
-    return JSON.parse(data);
-  }
+        const result = await circuitBreaker.callService(requestOptions);
+
+        if (!result) {
+            if (this.cache[cacheKey]) {
+                return this.cache[cacheKey];
+            }
+            return null;
+        }
+
+        this.cache[cacheKey] = result;
+        return result;
+    }
+
+    async getService(servicename) {
+        const response = await axios.get(`${this.serviceRegURL}/find/${servicename}/${this.serviceVersionId}`);
+        return response.data;
+    }
 }
 
 module.exports = FeedbackService;

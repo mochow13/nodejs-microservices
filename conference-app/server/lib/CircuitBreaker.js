@@ -6,7 +6,7 @@ class CircuitBreaker {
         this.states = {};
         this.failThresh = 5;
         this.cooldown = 10;
-        this.reqTimeout = 2;
+        this.reqTimeout = 1;
     }
 
     async callService(reqOptions) {

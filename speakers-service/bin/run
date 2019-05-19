@@ -12,7 +12,7 @@ const server = http.createServer(service);
 
 // Important - a service should not have a fixed port but should randomly choose one
 // Passing 0 chooses a random free port
-server.listen(0);
+server.listen(process.env.PORT || 0);
 
 server.on('listening', () => {
     const registerService = () => axios.put(`http://localhost:3000/register/${config.name}/${config.version}/${server.address().port}`);
