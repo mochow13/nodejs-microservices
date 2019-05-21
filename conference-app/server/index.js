@@ -11,6 +11,8 @@ const app = express();
 
 const config = configs[app.get('env')];
 
+// initiate Speakers object to use the speakers-service
+// same for feedback
 const speakers = new Speakers(config);
 const feedback = new Feedback(config);
 

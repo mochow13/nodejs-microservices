@@ -14,6 +14,7 @@ module.exports = (config) => {
         });
     }
 
+    // Endpoint exposed for services to register in the serviceRegistry
     service.put('/register/:servicename/:serviceversion/:serviceport', (req, res) => {
         const {
             servicename,
@@ -21,8 +22,9 @@ module.exports = (config) => {
             serviceport,
         } = req.params;
 
+        // ipv6 check, if it's ipv6, we add [] to distinguish
         const serviceip = req.connection.remoteAddress.includes('::') ? `[${req.connection.remoteAddress}]` : req.connection.remoteAddress;
-
+        // we return the service-key to the service to ensure that it's registered
         const serviceKey = serviceRegistry
             .register(servicename, serviceversion, serviceip, serviceport);
         return res.json({
@@ -30,6 +32,7 @@ module.exports = (config) => {
         });
     });
 
+    // similar to the previous endpoint, only unregisters a service from serviceRegistry
     service.delete('/register/:servicename/:serviceversion/:serviceport', (req, res) => {
         const {
             servicename,
@@ -47,6 +50,7 @@ module.exports = (config) => {
         });
     });
 
+    // find and return a service based on the name and version
     service.get('/find/:servicename/:serviceversion', (req, res) => {
         const {
             servicename,
@@ -72,5 +76,6 @@ module.exports = (config) => {
             },
         });
     });
+
     return service;
 };

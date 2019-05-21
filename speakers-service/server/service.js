@@ -14,8 +14,10 @@ module.exports = (config) => {
         });
     }
 
+    // using express default support for images
     service.use('/images/', express.static(config.data.images));
 
+    // following endpoints generate various data on the speakers
     service.get('/list', async (req, res, next) => {
         try {
             return res.status(200).json(await speakers.getList());

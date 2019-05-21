@@ -1,7 +1,14 @@
+/*
+This class basically does the database query work, which is 
+a file in this case.
+*/
+
 const fs = require('fs');
 const util = require('util');
 
 const readFile = util.promisify(fs.readFile);
+
+// This class basically gets the data from the storage/db
 
 class SpeakersService {
     constructor(datafile) {

@@ -21,7 +21,8 @@ module.exports = {
         name,
         version,
         serviceTimeout: 30,
-        heartbeat: 20,
+        heartbeat: 20, // send heartbeat every 20s
+        // data paths, like db addresses
         data: {
             images: path.join(__dirname, '../data/images'),
             speakers: path.join(__dirname, '../data/speakers.json'),

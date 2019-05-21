@@ -2,9 +2,11 @@
 
 const http = require('http');
 
+// Import the appropiate config from the config folder
 const config = require('../config')[process.env.NODE_ENV || 'development'];
-
+// bunyan logger coming from config/index.js
 const log = config.log();
+// Service takes in the configs as params
 const service = require('../server/service')(config);
 
 const server = http.createServer(service);

@@ -9,7 +9,7 @@ module.exports = (param) => {
     const {
         speakers,
     } = param;
-
+    // expose an endpoint for the front end to get images
     router.get('/images/:type/:file', async (req, res, next) => {
         try {
             const image = await speakers.getImage(`${req.params.type}/${req.params.file}`);
@@ -37,6 +37,7 @@ module.exports = (param) => {
         }
     });
 
+    // sending the 'speakers' object as parameter to the /speakers route
     router.use('/speakers', speakersRoute(param));
     router.use('/feedback', feedbackRoute(param));
 

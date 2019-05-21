@@ -1,8 +1,8 @@
-const bunyan = require('bunyan');
+const bunyan = require('bunyan'); // logging library
 // Load package.json
 const pjs = require('../package.json');
 
-// Get some meta info from the package.json
+// Get some meta info from the package.json, it has name and version of service
 const {
     name,
     version,
