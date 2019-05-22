@@ -1,3 +1,3 @@
 # nodejs-microservices
 
-Implementation of a sample Microservice architecture with Node.js.
+Implementation of a sample Microservice architectures with Node.js.
